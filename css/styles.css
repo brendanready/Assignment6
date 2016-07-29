@@ -1,0 +1,142 @@
+.full {
+  background: url(../images/pizzabg.jpg) no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+}
+
+.hidethis {
+    visibility: hidden !important;
+}
+
+#total-box {
+    width: 300px;
+    height: 50px;
+    font-weight: bold;
+    margin: 30px auto 0px auto;
+    text-align: center;
+    font-size: 2em;
+    background-color: #FFFFFF;
+}
+
+#total {
+    background-color: #FFFFFF;
+    border: 0;
+    width: 100px;
+}
+
+.jumbotron {
+    text-align: center;
+    clear: both;
+    background-color: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+
+}
+
+.jumbotron h1, #intro-text {
+    color: #FFFFFF;
+    background-color:rgba(155,0,0,0.3);
+    margin-bottom: 0px;
+}
+
+.jumbotron p:first-of-type {
+    color: darkgreen;
+    background-color: white;
+}
+
+.logo {
+    background-color: rgba(229, 229, 229, 0.8);
+}
+
+.navlogo {
+    background-color: rgba(255,255,255, 0.98);
+}
+
+.btn-primary {
+    background-color: forestgreen;
+    border-color: darkgreen;
+}
+
+.btn-primary:hover {
+    background-color: darkgreen;
+    border-color: darkgreen;
+}
+
+.mainhide {
+   display: none; /*change id="main", billing section, form-submit, and totalbox to to .mainhide when ready*/
+}
+
+#field1 label, #field2 label, #field3 label {
+    text-align: left;
+    color: #5e8d89;
+}
+
+.error {
+    color: darkred;
+    font-weight: bold;
+    text-align: right;
+}
+
+.cardDisplay {
+    color: darkgreen;
+    font-weight: bold;
+    text-align: right;
+}
+
+#field3 div {
+    margin: 10px 0;
+}
+
+#toppings_inner_box {
+    width: 500px;
+}
+
+#field3 {
+    color: #3f95d1;
+}
+
+#field3 label {
+    margin-top: 15px;
+}
+
+#field3 input {
+    margin: 5px;
+    color: #3f95d1;
+}
+
+.align-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#other-box {
+    display: none;
+}
+
+#fin-build-btn, #form-submit {
+    background-color: #3f95d1;
+    border-color: #3f95d1;
+    color: #FFFFFF;
+    font-family: 'Varela Round', sans-serif;
+}
+
+#form-submit {
+    display: none;
+    margin: 10px auto 0 auto;
+}
+
+#end h1 {
+    text-align: center;
+    color: #3f95d1;
+    font-family: 'Varela Round', sans-serif;
+}
+
+footer {
+    border-top: thin solid grey;
+    padding: 20px 0;
+    margin-top: 10px;
+    text-align: center;
+}
