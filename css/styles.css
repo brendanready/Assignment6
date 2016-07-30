@@ -116,14 +116,18 @@
     display: none;
 }
 
-#fin-build-btn, #form-submit {
-    background-color: #3f95d1;
-    border-color: #3f95d1;
+#finPizzaBuild_Btn, #placeOrder_Btn {
+    background-color: forestgreen;
+    border-color: darkolivegreen;
     color: #FFFFFF;
     font-family: 'Varela Round', sans-serif;
 }
 
-#form-submit {
+#finPizzaBuild_Btn:hover, #placeOrder_Btn:hover {
+    background-color: darkgreen;
+}
+
+#placeOrder_Btn {
     display: none;
     margin: 10px auto 0 auto;
 }
