@@ -141,7 +141,7 @@ doughType.addEventListener("click", showPizzaSizes, false);
 
 function formValidation() {
 
-    var regName = /^[0-9]/g,
+    var regName = /^[a-zA-Z ]{1,30}$/,
         regState = /^([a-zA-Z]){2}$/,
         regZip = /^[0-9]{5}(?:-[0-9 ]{4})?$/,
         regPhone = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/,
@@ -150,7 +150,7 @@ function formValidation() {
         validDough = false,
         doughRadios = document.getElementsByName("dough");
 
-    if (document.form.name.value.length === 0 || regName.test(document.form.name.value) === true) {
+    if (regName.test(document.form.name.value) === false) {
         window.console.log("Error in name!");
         document.form.name.focus();
         document.form.name.style.backgroundColor = "#FF9999";
@@ -230,7 +230,7 @@ function formValidation() {
     }
 
     if (!validDough) {
-        window.alert("Please pick a dough option");
+        window.alert("Please pick a dough type");
         return false;
     }
 
@@ -243,7 +243,7 @@ function formValidation() {
 
 function billingValidation() {
 
-    var regName = /^[0-9]/g,
+    var regName = /^[a-zA-Z ]{1,30}$/,
         regState = /^([a-zA-Z]){2}$/,
         regZip = /^[0-9]{5}(?:-[0-9 ]{4})?$/,
         regCVC = /^[0-9]{3,4}$/,
@@ -256,7 +256,7 @@ function billingValidation() {
         expirationYear;
 
     if (sameAsDelivery_CB.checked !== true) {
-        if (document.form.bill_name.value.length === 0 || regName.test(document.form.bill_name.value) === true) {
+        if (regName.test(document.form.bill_name.value) === false) {
             window.console.log("Error in billing name!");
             document.form.bill_name.style.backgroundColor = "#FF9999";
             return false;
@@ -301,19 +301,19 @@ function billingValidation() {
 
     /*Credit Card Number Validation - Empty Textbox*/
 
-    if (document.form.cc_number.value.length === 0) {
+    if (document.form.cc_number_Input.value.length === 0) {
         elemento = document.createElement("option");
         elemento.textContent = "Please enter a CC Number";
         elemento.value = "error";
         cc_number_Div.appendChild(elemento);
-        document.form.cc_number.focus();
-        document.form.cc_number.style.backgroundColor = "#FF9999";
+        document.form.cc_number_Input.focus();
+        document.form.cc_number_Input.style.backgroundColor = "#FF9999";
         return false;
     } else {
-        document.form.cc_number.style.backgroundColor = "#FFFFFF";
+        document.form.cc_number_Input.style.backgroundColor = "#FFFFFF";
     }
 
-    cCNum = document.form.cc_number.value;
+    cCNum = document.form.cc_number_Input.value;
 
     /*CVC validation*/
 
@@ -354,9 +354,112 @@ function billingValidation() {
 placeOrder_Btn.addEventListener("click", billingValidation, false);
 
 /*----------------------------------------------
-        Extra Credit Card Validation
+        Credit Card Validation Extra Credit
 ------------------------------------------------*/
 
+function creditCardValidation() {
+
+    var cCNum = document.form.cc_number_Input.value,
+        splitCCNum = cCNum.split(""),
+        checksummed,
+        elemento,
+        newContent,
+        regCC = /^\d+$/;
+    
+    function cCError(text) {
+        if (cc_number_Div.childElementCount === 1) {
+            elemento = document.createElement("div");
+            elemento.value = "error";
+            elemento.setAttribute("class", "error");
+            newContent = document.createTextNode(text);
+            elemento.appendChild(newContent);
+            cc_number_Div.insertBefore(elemento, cc_number_Input.nextSibling);
+            
+            document.form.cc_number_Input.focus();
+            document.form.cc_number_Input.style.backgroundColor = "#FF9999";
+        } else {
+            console.log("Child Element Count: " + cc_number_Div.childElementCount);
+            console.log("elemento is typeof: " + typeof elemento);
+            cc_number_Div.removeChild(cc_number_Div.childNodes[2]);
+            cCError(text);
+        }
+    }
+    
+    function luhnFormula() {
+        var reversedCCNum, i, doubledCCNum, totaledCCNum, intermediate;
+        
+        reversedCCNum = splitCCNum.reverse();
+
+        for (i = 1; i < reversedCCNum.length; i = i + 2) {
+            reversedCCNum[i] = reversedCCNum[i] * 2;
+        }
+
+        doubledCCNum = reversedCCNum.join("");
+        doubledCCNum = doubledCCNum.split("");
+        totaledCCNum = 0;
+
+        for (i = 0; i < doubledCCNum.length; i++) {
+            intermediate = parseInt(doubledCCNum[i], 10);
+            totaledCCNum += intermediate;
+        }
+
+        checksummed = totaledCCNum / 10;
+
+        if (totaledCCNum % 10 !== 0) {
+            cCError("Invalid CC Number");
+        } else if (totaledCCNum % 10 === 0) {
+            window.console.log("valid");
+            return true;
+        }
+    }
+
+    function displayCCType(text) {
+        if (cc_number_Div.childElementCount === 1) {
+            elemento = document.createElement("div");
+            elemento.setAttribute("class", "cardDisplay");
+            newContent = document.createTextNode(text);
+            elemento.appendChild(newContent);
+            cc_number_Div.insertBefore(elemento, cc_number_Input.nextSibling);
+        } else {
+            cc_number_Div.removeChild(elemento);
+            displayCCType(text);
+        }
+    }
+    
+    if (cCNum.length === 0) {
+        cCError("Credit Card Required");
+        return false;
+    } else if (regCC.test(cCNum) === false) {
+        cCError("Numbers only");
+        return false;
+    } else if (splitCCNum.length !== 13 && splitCCNum.length !== 15 && splitCCNum.length !== 16) {
+        cCError("Invalid CC Number Length");
+        return false;
+    } else if (regCC.test(cCNum) === true && (splitCCNum.length === 13 || splitCCNum.length === 15 || splitCCNum.length === 16)) {
+        if ((splitCCNum.length === 16 || splitCCNum.length === 13) && splitCCNum[0] === "4") {
+            cc_number_Div.removeChild(cc_number_Div.childNodes[2]);
+            displayCCType("Visa");
+            luhnFormula();
+            document.form.cc_number_Input.style.backgroundColor = "#FFFFFF";
+        } else if (splitCCNum.length === 16 && splitCCNum[0] === "5" && splitCCNum[1] >= "1" && splitCCNum[1] <= "5") {
+            cc_number_Div.removeChild(cc_number_Div.childNodes[2]);
+            displayCCType("Mastercard");
+            luhnFormula();
+            document.form.cc_number_Input.style.backgroundColor = "#FFFFFF";
+        } else if (splitCCNum.length === 15 && splitCCNum[0] === "3" && splitCCNum[1] === "7") {
+            cc_number_Div.removeChild(cc_number_Div.childNodes[2]);
+            displayCCType("American Express");
+            luhnFormula();
+            document.form.cc_number_Input.style.backgroundColor = "#FFFFFF";
+        } else {
+            cCError("Unrecognized Credit Card");
+            return false;
+        }
+    }
+
+}
+
+cc_number_Input.addEventListener("blur", creditCardValidation, false);
 
 /*----------------------------------------------
         Build Your Order Confirmation
